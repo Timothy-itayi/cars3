@@ -11,46 +11,80 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  String? _selectedStat;
-  String? _selectedValue;
+  late CarCard playerCard;
+  late CarCard opponentCard;
+  String? selectedStat;
+  String result = "";
+  bool showComparison = false;
 
-  // Dummy car data
-  final CarCard dummyCar = CarCard(
-    name: "Apex X7",
-    speed: 320,
-    horsepower: 680,
-    torque: 720,
-    acceleration: 2.9,
-    handling: 89,
-  );
-
-  void _onStatSelected(String stat) {
-    try {
-      setState(() {
-        _selectedStat = stat;
-        _selectedValue = _getStatValue(stat);
-      });
-      debugPrint("Selected stat: $stat -> Value: $_selectedValue");
-    } catch (e, stackTrace) {
-      debugPrint("Error selecting stat: $e");
-      debugPrint("Stack trace: $stackTrace");
-    }
+  @override
+  void initState() {
+    super.initState();
+    _initializeCards();
   }
 
-  String _getStatValue(String stat) {
+  void _initializeCards() {
+    playerCard = CarCard(
+      name: "Apex X7",
+      speed: 320,
+      horsepower: 680,
+      torque: 720,
+      acceleration: 2.9,
+      handling: 89,
+    );
+
+    opponentCard = CarCard(
+      name: "Falcon GT",
+      speed: 300,
+      horsepower: 700,
+      torque: 690,
+      acceleration: 3.1,
+      handling: 92,
+    );
+
+    selectedStat = null;
+    result = "";
+    showComparison = false;
+  }
+
+  void _onStatSelected(String stat) {
+    final playerValue = _getStatValue(playerCard, stat);
+    final opponentValue = _getStatValue(opponentCard, stat);
+
+    setState(() {
+      selectedStat = stat;
+      showComparison = true;
+
+      if (stat == "Acceleration") {
+        result = playerValue < opponentValue ? "You Win!" : playerValue > opponentValue ? "You Lose!" : "It's a Draw!";
+      } else {
+        result = playerValue > opponentValue ? "You Win!" : playerValue < opponentValue ? "You Lose!" : "It's a Draw!";
+      }
+
+      debugPrint("Stat: $stat → You: $playerValue, Opponent: $opponentValue → $result");
+    });
+  }
+
+  void _resetGame() {
+    setState(() {
+      _initializeCards();
+    });
+  }
+
+  num _getStatValue(CarCard card, String stat) {
     switch (stat) {
       case 'Speed':
-        return dummyCar.speed.toString();
+        return card.speed;
       case 'Horsepower':
-        return dummyCar.horsepower.toString();
+        return card.horsepower;
       case 'Torque':
-        return dummyCar.torque.toString();
+        return card.torque;
       case 'Acceleration':
-        return '${dummyCar.acceleration}s';
+        return card.acceleration;
       case 'Handling':
-        return dummyCar.handling.toString();
+        return card.handling;
       default:
-        throw ArgumentError('Unknown stat: $stat');
+        return 0;
     }
   }
 
@@ -59,63 +93,62 @@ class _GameScreenState extends State<GameScreen> {
     final stats = ['Speed', 'Horsepower', 'Torque', 'Acceleration', 'Handling'];
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Your Car",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(
-                height: 350,
-                width: double.infinity,
-                child: AnimatedCarCard(card: dummyCar),
-              ),
-
-              // Show selected stat value if available
-              if (_selectedStat != null && _selectedValue != null)
-                Column(
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 600),
+                opacity: showComparison ? 1 : 0,
+                child: Column(
                   children: [
-                    const SizedBox(height: 8),
-                    Text(
-                      "Selected: $_selectedStat",
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      _selectedValue!,
-                      style: const TextStyle(
-                        color: Colors.amberAccent,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const Text("Opponent's Car", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 200, child: AnimatedCarCard(card: opponentCard)),
                   ],
                 ),
-
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: stats.map((stat) {
-                  final isSelected = stat == _selectedStat;
-                  return StatButton(
-                    label: stat,
-                    onPressed: () => _onStatSelected(stat),
-                    isSelected: isSelected,
-                  );
-                }).toList(),
               ),
+
+              const SizedBox(height: 2),
+
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 600),
+                opacity: 1,
+                child: Column(
+                  children: [
+                    const Text("Your Car", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 200, child: AnimatedCarCard(card: playerCard)),
+                  ],
+                ),
+              ),
+
+              if (selectedStat != null)
+                Text("Result: $result",
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+
+              const SizedBox(height: 20),
+
+              if (!showComparison)
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  alignment: WrapAlignment.center,
+                  children: stats
+                      .map((stat) => StatButton(
+                            label: stat,
+                            onPressed: () => _onStatSelected(stat),
+                          ))
+                      .toList(),
+                ),
+
+              if (showComparison)
+                ElevatedButton.icon(
+                  onPressed: _resetGame,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text("Play Again"),
+                ),
             ],
           ),
         ),

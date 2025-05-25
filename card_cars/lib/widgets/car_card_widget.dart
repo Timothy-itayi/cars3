@@ -11,9 +11,9 @@ class CarCardWidget extends StatelessWidget {
     return Card(
       color: Colors.blueGrey.shade900,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      elevation: 12,
+      elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 28),
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 28),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -41,7 +41,7 @@ class CarCardWidget extends StatelessWidget {
 
   Widget _buildStat(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
