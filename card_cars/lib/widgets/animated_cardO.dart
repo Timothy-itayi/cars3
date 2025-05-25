@@ -1,19 +1,18 @@
-// opponent animated car
-
+import 'package:card_cars/widgets/car_card_widget.dart' show OpponentCarCardWidget;
 import 'package:flutter/material.dart';
 import '../models/car_card.dart';
-import 'car_card_widget.dart';
 
-class AnimatedCarCard extends StatefulWidget {
+
+class AnimatedOpponentCarCard extends StatefulWidget {
   final CarCard card;
 
-  const AnimatedCarCard({super.key, required this.card});
+  const AnimatedOpponentCarCard({super.key, required this.card});
 
   @override
-  State<AnimatedCarCard> createState() => _AnimatedCarCardState();
+  State<AnimatedOpponentCarCard> createState() => _AnimatedOpponentCarCardState();
 }
 
-class _AnimatedCarCardState extends State<AnimatedCarCard>
+class _AnimatedOpponentCarCardState extends State<AnimatedOpponentCarCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -46,22 +45,51 @@ class _AnimatedCarCardState extends State<AnimatedCarCard>
     super.dispose();
   }
 
+  Widget _buildFront() {
+    return GestureDetector(
+      onTap: _toggleCard,
+      child: SizedBox(
+        height: 100,
+        child: Card(
+          color: Colors.teal.shade600,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 1,
+          child: const Center(
+            child: Padding(
+              padding: EdgeInsets.all(2),
+              child: Text(
+                "Tap to Reveal",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 6,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
+  Widget _buildBack() {
+    return GestureDetector(
+      onTap: _toggleCard,
+      child: OpponentCarCardWidget(card: widget.card),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Back card fades in as animation progresses
         FadeTransition(
           opacity: _animation,
-          
+          child: _buildBack(),
         ),
-
-        // Front card fades out as animation progresses
         FadeTransition(
           opacity: ReverseAnimation(_animation),
-          
+          child: _buildFront(),
         ),
       ],
     );

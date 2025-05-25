@@ -25,7 +25,7 @@ class LearnScreen extends StatelessWidget {
               const SizedBox(height: 30),
               const Text(
                 'Pick a category about the car that you think will beat your opponent.\n\n'
-                'If your stat is higher (or lower for acceleration), you win the round.\n\n'
+                'If your stat is higher you win the round.\n\n'
                 'If not, you lose.',
                 style: TextStyle(fontSize: 16, color: Colors.white70),
                 textAlign: TextAlign.center,

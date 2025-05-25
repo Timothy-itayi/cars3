@@ -6,11 +6,11 @@ class StatButton extends StatelessWidget {
   final bool isSelected;
 
   const StatButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
