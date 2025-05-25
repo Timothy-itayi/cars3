@@ -1,17 +1,16 @@
-# 🚗 Top Trumps: Car Edition
+
 
 A car-themed card game built with **Flutter** that brings high-octane battles to your fingertips. Inspired by the classic Top Trumps, players go head-to-head using car stat cards to see who reigns supreme.
 
-## 🚀 Getting Started
 
-### Prerequisites
+Prerequisites
 
 - Flutter SDK: [Install Flutter](https://flutter.dev/docs/get-started/install)
 - Dart (included with Flutter)
 
-### Installation
+ Installation
 
-```bash
+bash
 git clone https://github.com/your-username/top-trumps-car-edition.git
 cd top-trumps-car-edition
 flutter pub get
