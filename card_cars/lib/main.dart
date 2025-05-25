@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/game_screen.dart';
+import 'screens/title_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Car Trumps Game',
+      title: 'Turn the Corner',
       debugShowCheckedModeBanner: false,
-      home: GameScreen(),
+      theme: ThemeData.dark(),
+      home: const TitleScreen(),
     );
   }
 }
