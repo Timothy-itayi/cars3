@@ -68,16 +68,17 @@ class _AnimatedCarCardState extends State<AnimatedCarCard>
     );
   }
 
-  Widget _buildBack() {
-    return GestureDetector(
-      onTap: _toggleCard,
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 20,
-        child: CarCardWidget(card: widget.card),
-      ),
-    );
-  }
+Widget _buildBack() {
+  return GestureDetector(
+    onTap: _toggleCard,
+    child: Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 20,
+      child: PlayerCarCardWidget(card: widget.card),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

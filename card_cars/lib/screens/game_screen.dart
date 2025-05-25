@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/stat_button.dart';
 import '../models/car_card.dart';
-import '../widgets/animated_card.dart';
+import '../widgets/animate_card.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -93,10 +93,10 @@ class _GameScreenState extends State<GameScreen> {
     final stats = ['Speed', 'Horsepower', 'Torque', 'Acceleration', 'Handling'];
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 144, 46, 46),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -106,29 +106,29 @@ class _GameScreenState extends State<GameScreen> {
                 child: Column(
                   children: [
                     const Text("Opponent's Car", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 200, child: AnimatedCarCard(card: opponentCard)),
+                    SizedBox(height: 300, child: AnimatedCarCard(card: opponentCard)),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 2),
+              const SizedBox(height: 80),
 
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 600),
                 opacity: 1,
                 child: Column(
                   children: [
-                    const Text("Your Car", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 200, child: AnimatedCarCard(card: playerCard)),
+                    const Text("Your Car", style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+                    SizedBox(height: 300, child: AnimatedCarCard(card: playerCard)),
                   ],
                 ),
               ),
 
               if (selectedStat != null)
                 Text("Result: $result",
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               if (!showComparison)
                 Wrap(
